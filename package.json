@@ -1,0 +1,26 @@
+{
+  "name": "node-epi",
+  "version": "0.0.1",
+  "description": "Enterprise Proxy Integration for node.js",
+  "author": "Blue Gnosis, LLC <info@bluegnosis.com>",
+  "maintainers": [
+    "Doug Mealing <doug@bluegnosis.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bluegnosis/node-epi.git"
+  },
+  "keywords": [
+    "proxy",
+    "integration",
+    "enterprise"
+  ],
+  "main":"./lib/epi.js",
+  "directories": {
+    "doc": ".",
+    "example": "examples"
+  },
+  "dependencies": {
+    "http-proxy": "0.8.x"
+  }
+}
