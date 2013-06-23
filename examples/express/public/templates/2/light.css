@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+/* General styles */
+
+html {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #000000;
+	padding:0em;
+	margin:0em;
+}
+
+body {
+    font: 13px/1.231 arial,helvetica,clean,sans-serif;
+	color:333333;
+	padding:0em;
+	margin:0em;
+    height:100%;
+}
+
+a, a:visited {
+	color: #31669A;
+	text-decoration:none;
+}
+
+a:hover {
+	text-decoration:underline;
+}
+
+a:focus {
+	background: #FFC;
+}
+
+
