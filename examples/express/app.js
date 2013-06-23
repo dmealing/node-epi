@@ -35,17 +35,13 @@ for( var i = 1; i <=2; i++ ) {
  */
 var template = function (req, type, block) {
 
-    if ( !req.clientInfo ) return [];
-
-    var id = req.clientInfo.templateId;
+    var id = 1;
 
     var jadePage = type === "thin" ? templates[id].thin : templates[id].thick;
 
     var t = jadePage({
-        title:"Test!",
+        title:'',
         user:req.user,
-        clientInfo:req.clientInfo,
-        menu: menu,
         content:"<--SPLIT-->"
     });
 
@@ -101,7 +97,17 @@ var beforeProxy = function( proxyOptions, requestOptions, req, res, next ) {
     next();
 };
 
-var demoProxy = epi.createProxy(80, 'www.bluegnosis.com', "/epi-demo", template);
+// Create a proxy for the demo server
+var demoProxy = epi.createProxy( {
+        server: 'www.bluegnosis.com',
+        port: 80,
+        baseUrl: '/epi-demo',
+        path: '/demo',
+        templateEngine: template,
+        beforeCallback: beforeProxy,
+        debug: true
+    });
+    // 80, 'www.bluegnosis.com', "/epi-demo", "/demo", template, beforeProxy );
 
 /** Setup any page scope variables for Express */
 function setupPageVars(req, res, next) {
@@ -119,25 +125,39 @@ app.configure(function () {
     app.set('view engine', 'jade');
     app.use(express.favicon());
     app.use(express.logger('dev'));
-    app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
     app.use(express.session({ secret:'N0de EP1 Demo' }));
 
-    app.use('/demo', demoProxy);
+    app.use('/demo/', demoProxy);
 
+    app.use(express.bodyParser());
     app.use(setupPageVars);
     app.use(app.router);
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
+/**
+ * @function Inject the correct header/footer into the local variables
+ * @param req
+ * @param res
+ * @param next
+ */
+var templateInjection = function( req, res, next ) {
+
+    res.header('content-type','text/html');
+
+    res.locals.header = template(req, "thick", "header" );
+    res.locals.footer = template(req, "thick", "footer" );
+
+    next();
+}
 
 app.configure('development', function () {
     app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
-app.get('/users', user.list);
+app.get('/', templateInjection, routes.index);
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log("Express server listening on port " + app.get('port'));
