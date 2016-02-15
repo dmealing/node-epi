@@ -2,9 +2,9 @@
   "name": "node-epi",
   "version": "0.0.1",
   "description": "Enterprise Proxy Integration for node.js",
-  "author": "Blue Gnosis, LLC <info@bluegnosis.com>",
+  "author": "Doug Mealing, LLC <doug@dougmealing.com>",
   "maintainers": [
-    "Doug Mealing <doug@bluegnosis.com>"
+    "Doug Mealing <doug@dougmealing.com>"
   ],
   "repository": {
     "type": "git",
